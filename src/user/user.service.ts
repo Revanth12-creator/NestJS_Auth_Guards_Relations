@@ -9,7 +9,7 @@ import { User } from './entities/user.entity';
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+  ) { }
   async create(createUserDto: CreateUserDto) {
     try {
       let { first_name, last_name, age, address, id } = createUserDto;
@@ -20,14 +20,14 @@ export class UserService {
         age: age,
         address: address,
       };
-      let userCreated = await this.userRepository.save(createUser);      
+      let userCreated = await this.userRepository.save(createUser);
       if (!userCreated) {
         return { statusCode: 400, message: 'Something went wrong' };
       }
       return { statusCode: 200, data: {}, message: 'Create Successfully' };
     } catch (err) {
-      return { statusCode: 500, data: {},message: err };
-      
+      return { statusCode: 500, data: {}, message: err };
+
     }
   }
 
@@ -129,7 +129,7 @@ export class UserService {
           `%${filterObj.search_string}%`
       });
 
-      return await usersData.getRawOne() ? { statuCode: 200, data: await usersData.getRawMany() } : { statusCode: 200,data:[], message: 'No Data available' };
+      return await usersData.getRawOne() ? { statuCode: 200, data: await usersData.getRawMany() } : { statusCode: 200, data: [], message: 'No Data available' };
     }
   }
 }
