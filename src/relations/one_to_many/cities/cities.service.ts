@@ -31,11 +31,27 @@ export class CitiesService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} city`;
+    return this.cityService.findOne({
+      relations: {
+        country: true
+      },
+      where: {
+        id: id
+      }
+    })
   }
 
-  update(id: number, updateCityDto: UpdateCityDto) {
-    return `This action updates a #${id} city`;
+  async update(id: number, updateCityDto: UpdateCityDto) {
+    const { city_name, city_pincode, country_id } = updateCityDto;
+    const updateObj = {
+      city_name, city_pincode, country_id
+    }
+    let updateCities = await this.cityService.update(id, updateObj);
+    if (updateCities.affected == 1) {
+      return { statusCode: 200, message: 'Updated Succesfully' }
+    } else {
+      return { statusCode: 400, message: 'Something went wrong' }
+    }
   }
 
   remove(id: number) {

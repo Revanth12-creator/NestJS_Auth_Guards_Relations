@@ -18,7 +18,7 @@ export class CountryController {
     return this.countryService.findAll();
   }
 
-  @Get(':id')
+  @Get('profile/:id')
   findOne(@Param('id') id: number) {
     return this.countryService.findOne(id);
   }

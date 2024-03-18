@@ -17,14 +17,14 @@ export class CitiesController {
     return this.citiesService.findAll();
   }
 
-  @Get(':id')
+  @Get('profile/:id')
   findOne(@Param('id') id: string) {
     return this.citiesService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCityDto: UpdateCityDto) {
-    return this.citiesService.update(+id, updateCityDto);
+  @Patch('update/:id')
+  update(@Param('id') id: number, @Body() updateCityDto: UpdateCityDto) {
+    return this.citiesService.update(id, updateCityDto);
   }
 
   @Delete(':id')

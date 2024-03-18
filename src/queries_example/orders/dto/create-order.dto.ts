@@ -16,4 +16,9 @@ export class CreateOrderDto {
     @IsString()
     @Column()
     address: string
+
+    @IsNotEmpty()
+    @IsString()
+    @Column()
+    customer_id: string
 }

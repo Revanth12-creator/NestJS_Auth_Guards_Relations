@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Customer } from "src/queries_example/customer/entities/customer.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'orders' })
 export class Order {
@@ -14,4 +15,11 @@ export class Order {
 
     @Column({ nullable: false })
     address: string
+
+    @Column({ nullable: false })
+    customer_id: string
+
+    @ManyToOne(() => Customer, (customer) => customer.orders)
+    @JoinColumn({ name: 'customer_id' })
+    customer: Customer
 }

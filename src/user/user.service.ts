@@ -20,6 +20,7 @@ export class UserService {
         age: age,
         address: address,
       };
+
       let userCreated = await this.userRepository.save(createUser);
       if (!userCreated) {
         return { statusCode: 400, message: 'Something went wrong' };
@@ -27,7 +28,6 @@ export class UserService {
       return { statusCode: 200, data: {}, message: 'Create Successfully' };
     } catch (err) {
       return { statusCode: 500, data: {}, message: err };
-
     }
   }
 
@@ -40,6 +40,7 @@ export class UserService {
   }
 
   async findOne(id: number) {
+
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       return {

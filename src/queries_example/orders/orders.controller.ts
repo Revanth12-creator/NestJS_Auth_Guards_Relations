@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrdersService } from './orders.service';
+import { ORDER_LIST_TYPES } from './types';
 
 @Controller('orders')
 export class OrdersController {
@@ -14,21 +14,22 @@ export class OrdersController {
 
   @Get()
   findAll() {
-    return this.ordersService.findAll();
+    return this.ordersService.findAllOrdersWithCustomerRequiredColumn();
   }
 
-  @Get('profile/:id')
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(id);
+  @Get('list')
+  queryFiltersBasedOnInput(@Query() input: ORDER_LIST_TYPES) {
+    return this.ordersService.queryFiltersBasedOnInput(input);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.ordersService.update(+id, updateOrderDto);
+
+  @Get('profile')
+  findOne(@Query() id: { orderId: string }) {
+    return this.ordersService.findOneOrderDetailsWithQuery(id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ordersService.remove(+id);
+  @Get('profile/details')
+  findOneByQuery(@Query() attribute: { orderId: string }) {
+    return this.ordersService.queryFindOneOrderDetailsWithCutomerData(attribute);
   }
 }

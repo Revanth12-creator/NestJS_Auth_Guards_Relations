@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestj
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { CUSTOMER_FILETER_LIST_TYPES } from './types';
 
 @Controller('customer')
 export class CustomerController {
@@ -23,7 +24,7 @@ export class CustomerController {
   }
 
   @Get('profile')
-  findCustomerByQuery(@Query() userData: { userId: string }) {
+  findCustomerByQuery(@Query() userData: { userId: string, name: string }) {
     return this.customerService.findOneCustomerByQuery(userData)
   }
 
@@ -37,5 +38,10 @@ export class CustomerController {
   @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.customerService.remove(id);
+  }
+
+  @Get('list')
+  coustomerFiltersList(@Query() input: CUSTOMER_FILETER_LIST_TYPES) {
+    return this.customerService.filtersBasedOnInput(input)
   }
 }

@@ -18,4 +18,7 @@ export class CreateUserDto {
 
   @Column()
   address: string;
+
+  @Column()
+  test: number[]
 }

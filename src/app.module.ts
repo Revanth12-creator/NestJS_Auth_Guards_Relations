@@ -8,6 +8,10 @@ import { CustomerModule } from './queries_example/customer/customer.module';
 import { Customer } from './queries_example/customer/entities/customer.entity';
 import { Order } from './queries_example/orders/entities/order.entity';
 import { OrdersModule } from './queries_example/orders/orders.module';
+import { CategoryModule } from './relations/many_to_many/category/category.module';
+import { Category } from './relations/many_to_many/category/entities/category.entity';
+import { Quation } from './relations/many_to_many/quations/entities/quation.entity';
+import { QuationsModule } from './relations/many_to_many/quations/quations.module';
 import { CitiesModule } from './relations/one_to_many/cities/cities.module';
 import { City } from './relations/one_to_many/cities/entities/city.entity';
 import { CountryModule } from './relations/one_to_one/country/country.module';
@@ -26,7 +30,7 @@ import { UserModule } from './user/user.module';
       username: 'root',
       password: 'Root@123',
       database: 'curd',
-      entities: [User, LoginUser, Customer, Order, Country, Leader, City],
+      entities: [User, LoginUser, Customer, Order, Country, Leader, City, Quation, Category],
       logging: true,
       synchronize: true,
     }),
@@ -37,6 +41,8 @@ import { UserModule } from './user/user.module';
     LeadersModule,
     CountryModule,
     CitiesModule,
+    QuationsModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

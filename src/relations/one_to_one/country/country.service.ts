@@ -30,7 +30,12 @@ export class CountryService {
   }
 
   findOne(id: number) {
-    return this.countryService.findOne({ where: { id: id } });
+    return this.countryService.findOne({
+      relations: {
+        leader: true,
+        cities: true
+      }, where: { id: id }
+    });
   }
 
 

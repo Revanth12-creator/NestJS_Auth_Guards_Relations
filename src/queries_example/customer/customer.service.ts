@@ -1,9 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { Customer } from './entities/customer.entity';
+import { CUSTOMER_FILETER_LIST_TYPES } from './types';
 
 @Injectable()
 export class CustomerService {
@@ -26,17 +27,22 @@ export class CustomerService {
   }
 
   async findAll() {
-    return this.customerService.find();
+    return this.customerService.find({
+      relations: { orders: true }, select: {
+        name: true,
+        orders: {
+          name: true
+        }
+      }
+    });
   }
 
   findOne(userId: string) {
     return this.customerService.findOne({ where: { userId } });
   }
 
-  //find customer by queery
-  async findOneCustomerByQuery(userData: { userId: string }) {
+  async findOneCustomerByQuery(userData: { userId: string, name: string }) {
     try {
-
       const query = this.customerService.createQueryBuilder('customer')
         .select([
           `customer.userId as userId`,
@@ -45,8 +51,6 @@ export class CustomerService {
           `customer.mobile_number as mobile_number`,
         ]);
       if (userData.userId) {
-        // let myQuery = `SELECT * FROM customer WHERE userId = 38fa2371-2909-4970-bf42-2c13c96af728`;
-
         let findUser = query.where(`userId LIKE :userId`, { userId: `%${userData.userId}%` });
         return await findUser.getRawOne() ? { statuCode: 200, data: await findUser.getRawOne() } : { statusCode: 200, data: [], message: 'No Data available' }
       } else {
@@ -55,9 +59,7 @@ export class CustomerService {
     } catch (err) {
       return err
     }
-
   }
-
 
   async update(userId: string, updateCustomerDto: UpdateCustomerDto) {
     try {
@@ -90,5 +92,15 @@ export class CustomerService {
     } catch (err) {
       return err
     }
+  }
+
+  async filtersBasedOnInput(input: CUSTOMER_FILETER_LIST_TYPES) {
+    const { name, email, mobile_number } = input;
+    let condition: FindOptionsWhere<Customer> | FindOptionsWhere<Customer>[] = {
+      ...(name ? { name: name } : {}),
+      ...(email ? { email: email } : {}),
+      ...(mobile_number ? { mobile_number: mobile_number } : {}),
+    }
+    return this.customerService.find({ where: condition });
   }
 }
